@@ -1,0 +1,101 @@
+Install Node
+* ~ * ~ * ~ * ~ * ~ *
+npm init -y
+
+Install Webpack
+* ~ * ~ * ~ * ~ * ~ *
+npm i --save-dev webpack webpack-cli
+package.json - > 
+    "scripts": {
+        "start": "webpack"
+    },
+
+
+Set entry and outputs
+* ~ * ~ * ~ * ~ * ~ *
+create webpack.config.js
+Inside webpack.config.js ...
+    const path = require("path");
+
+    module.exports = {
+        mode: "development",
+        devtool: false,
+        entry: "./src/index.js",
+        output: {
+            filename: "main.js",
+            path: path.resolve(__dirname, "dist")
+        },
+        plugins: []
+    }
+
+Style
+* ~ * ~ * ~ * ~ * ~ *
+npm install --save-dev sass-loader node-sass style-loader css-loader
+create 'main.scss' in src
+import  'main.scss' into 'index.js'
+inside webpack.config.js add
+    module: {
+        rules: [{
+            test: /\.scss$/,
+            use: [
+                'style-loader',
+                'css-loader',
+                'sass-loader'
+            ]
+        }]
+    }
+
+Cache Busting
+* ~ * ~ * ~ * ~ * ~ *
+Inside webpack.config.js add [contenthash] to the output filename 
+    output: {
+        filename: "main.[contenthash].bundle.js",
+        path: path.resolve(__dirname, "dist")
+    }
+    
+HTMLWebpackPlugin - simplifies the creation of HTML files to serve your webpack bundles. Especially useful for webpack bundles that nclude a hash file in the name
+    npm install --save-dev html-webpack-plugin
+
+Create a new variable at the top of config.js
+    var HTMLWebpackPlugin = require('html-webpack-plugin')
+
+Set the variables for the plugin
+    plugins: [
+        new HTMLWebpackPlugin({
+            template: "./src/index-template.html",
+            inject: "body"
+    ]
+
+
+Environments
+* ~ * ~ * ~ * ~ * ~ *
+npm install --save-dev webpack-merge
+
+Setup webpack dev server in package.json
+    "scripts": {
+        "start": "webpack serve --config webpack.dev.js --open",
+        "build": "webpack --config webpack.prod.js"
+    }
+
+File Loader
+* ~ * ~ * ~ * ~ * ~ *
+npm install --save-dev html-loader
+add to the rules in webpack.common.js
+Replace older hashed js files with new ones
+npm install --save-dev clean-webpack-plugin
+
+Vendor vs App.js
+* ~ * ~ * ~ * ~ * ~ *
+
+
+Separate CSS File
+* ~ * ~ * ~ * ~ * ~ *
+npm i --save-dev mini-css-extract-plugin
+
+Minification
+* ~ * ~ * ~ * ~ * ~ *
+npm install --save-dev css-minimizer-webpack-plugin
+
+Assets
+* ~ * ~ * ~ * ~ * ~ *
+https://dev.to/smelukov/webpack-5-asset-modules-2o3h
